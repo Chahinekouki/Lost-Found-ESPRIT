@@ -1,4 +1,4 @@
-package fr.jb3tech.domain;
+package tn.esprit.lostandfound.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
@@ -9,11 +9,13 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.io.Serializable;
-import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
+import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDate;
 
 /**
  * Base abstract class for entities which will hold definitions for created, last modified, created by,
@@ -36,7 +38,7 @@ public abstract class AbstractAuditingEntity implements Serializable {
     @Column(name = "created_date", updatable = false)
     @JsonIgnore
     @Builder.Default
-    private Instant createdDate = Instant.now();
+    private LocalDate localDate = LocalDate.now();
 
     @LastModifiedBy
     @Column(name = "last_modified_by", length = 50)
@@ -65,12 +67,12 @@ public abstract class AbstractAuditingEntity implements Serializable {
         this.createdBy = createdBy;
     }
 
-    public Instant getCreatedDate() {
-        return createdDate;
+    public LocalDate getLocalDate() {
+        return localDate;
     }
 
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
+    public void setLocalDate(LocalDate localDate) {
+        this.localDate = localDate;
     }
 
     public String getLastModifiedBy() {
