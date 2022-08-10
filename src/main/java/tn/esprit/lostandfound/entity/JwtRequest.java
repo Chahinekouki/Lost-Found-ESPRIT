@@ -5,6 +5,7 @@ public class JwtRequest {
     private String id;
     private String userPassword;
 
+
     public String getId() {
         return id;
     }
@@ -20,4 +21,6 @@ public class JwtRequest {
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
     }
+
+
 }
