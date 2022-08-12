@@ -1,6 +1,8 @@
 package tn.esprit.lostandfound.controller;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +23,8 @@ import java.util.List;
 
 public class UserController {
 
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserService userService;
 
@@ -29,10 +33,12 @@ public class UserController {
         userService.initRoleAndUser();
     }
 
+
     @PostMapping({"/registerNewUser"})
     public User registerNewUser(@RequestBody User user) {
         return userService.registerNewUser(user);
     }
+
 
     @GetMapping({"/forAdmin"})
     @PreAuthorize("hasRole('Admin')")
@@ -40,11 +46,30 @@ public class UserController {
         return "This URL is only accessible to the admin";
     }
 
-    @GetMapping({"/forUser"})
+
+    @PostMapping({"/forUser"})
     @PreAuthorize("hasRole('User')")
     public String forUser(){
         return "This URL is only accessible to the user";
     }
+
+    @PostMapping({"/banUser/{id}"})
+    @PreAuthorize("hasRole('Admin')")
+    public ResponseEntity<Void> banUser (@PathVariable("id") String id) throws Exception {
+        log.debug("REST request ban user", id);
+        userService.banUser(id);
+        return ResponseEntity.ok().build();
+    }
+
+
+    @PostMapping({"/allowUser/{id}"})
+    @PreAuthorize("hasRole('Admin')")
+    public ResponseEntity<Void> allowUser (@PathVariable("id") String id) throws Exception {
+        log.debug("REST request ban user", id);
+        userService.allowUser(id);
+        return ResponseEntity.ok().build();
+    }
+
 
     /**
      * TODO Documentation
