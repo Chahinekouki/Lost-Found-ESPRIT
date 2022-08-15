@@ -53,7 +53,7 @@ public class UserController {
         return "This URL is only accessible to the user";
     }
 
-    @PostMapping({"/banUser/{id}"})
+    @GetMapping({"/banUser/{id}"})
     @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Void> banUser (@PathVariable("id") String id) throws Exception {
         log.debug("REST request ban user", id);
@@ -62,7 +62,7 @@ public class UserController {
     }
 
 
-    @PostMapping({"/allowUser/{id}"})
+    @GetMapping({"/allowUser/{id}"})
     @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Void> allowUser (@PathVariable("id") String id) throws Exception {
         log.debug("REST request ban user", id);
