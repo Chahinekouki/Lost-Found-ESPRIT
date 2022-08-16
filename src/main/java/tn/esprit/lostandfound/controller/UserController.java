@@ -84,4 +84,15 @@ public class UserController {
         final Page<UserDTO> page = userService.getlistUsers(pageable);
         return new ResponseEntity<>(page.getContent(), HttpStatus.OK);
     }
+
+    /**
+     * TODO Documentation
+     *
+     */
+    @GetMapping("/userDetails/{id}")
+    @PreAuthorize("hasRole('Admin') or hasRole('User')")
+    public ResponseEntity<UserDTO> UserDetails (@PathVariable("id") String id) throws Exception {
+        log.debug("REST request ban user", id);
+        return new ResponseEntity<>(userService.getUser(id), HttpStatus.OK);
+    }
 }

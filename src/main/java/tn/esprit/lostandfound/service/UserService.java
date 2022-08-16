@@ -143,6 +143,24 @@ public class UserService {
         } else throw new Exception(String.valueOf(HttpStatus.NOT_ACCEPTABLE));
     }
 
+    public UserDTO getUser(String id) throws Exception {
+        Optional<User> user = userDao.findById(id);
+        if (!user.isPresent()) return UserDTO.builder().build();
+        return UserDTO.builder()
+                .identifiant(user.get().getId())
+                .userFirstName(user.get().getUserFirstName())
+                .userLastName(user.get().getUserLastName())
+                .tel(user.get().getTel())
+                .email(user.get().getEmail())
+                .isBanned(user.get().getBanned())
+                .authorities(user.get().getRole().stream()
+                        .map(Role::getRoleName)
+                        .collect(Collectors.toSet()))
+                .build();
+    }
+
+
+
     public String getEncodedPassword(String password) {
         return passwordEncoder.encode(password);
     }
