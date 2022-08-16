@@ -1,8 +1,11 @@
 package tn.esprit.lostandfound.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tn.esprit.lostandfound.dao.RoleDao;
@@ -13,11 +16,14 @@ import tn.esprit.lostandfound.service.dto.UserDTO;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService {
+
+    private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     private UserDao userDao;
@@ -116,6 +122,44 @@ public class UserService {
         );
 
     }
+
+    public void banUser(String id) throws Exception {
+        Optional<User> user = userDao.findById(id);
+        if(user.isPresent() ){
+            user.get().setBanned(Boolean.TRUE);
+            userDao.save(user.get());
+            log.debug("User banned", user);
+        } else throw new Exception(String.valueOf(HttpStatus.NOT_ACCEPTABLE));
+    }
+
+    public void allowUser(String id) throws Exception {
+
+        Optional<User> user = userDao.findById(id);
+        if(user.isPresent() ){
+            user.get().setBanned(Boolean.FALSE);
+            userDao.save(user.get());
+            log.debug("User allowed", user);
+
+        } else throw new Exception(String.valueOf(HttpStatus.NOT_ACCEPTABLE));
+    }
+
+    public UserDTO getUser(String id) throws Exception {
+        Optional<User> user = userDao.findById(id);
+        if (!user.isPresent()) return UserDTO.builder().build();
+        return UserDTO.builder()
+                .identifiant(user.get().getId())
+                .userFirstName(user.get().getUserFirstName())
+                .userLastName(user.get().getUserLastName())
+                .tel(user.get().getTel())
+                .email(user.get().getEmail())
+                .isBanned(user.get().getBanned())
+                .authorities(user.get().getRole().stream()
+                        .map(Role::getRoleName)
+                        .collect(Collectors.toSet()))
+                .build();
+    }
+
+
 
     public String getEncodedPassword(String password) {
         return passwordEncoder.encode(password);
