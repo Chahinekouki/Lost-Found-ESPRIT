@@ -11,12 +11,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tn.esprit.lostandfound.dao.UserDao;
 import tn.esprit.lostandfound.entity.User;
 import tn.esprit.lostandfound.service.UserService;
 import tn.esprit.lostandfound.service.dto.UserDTO;
 
 import javax.annotation.PostConstruct;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -28,6 +32,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserDao userDao;
+
     @PostConstruct
     public void initRoleAndUser() {
         userService.initRoleAndUser();
@@ -35,7 +42,8 @@ public class UserController {
 
 
     @PostMapping({"/registerNewUser"})
-    public User registerNewUser(@RequestBody User user) {
+    public User registerNewUser(@RequestBody User user)
+    {
         return userService.registerNewUser(user);
     }
 
@@ -94,5 +102,14 @@ public class UserController {
     public ResponseEntity<UserDTO> UserDetails (@PathVariable("id") String id) throws Exception {
         log.debug("REST request ban user", id);
         return new ResponseEntity<>(userService.getUser(id), HttpStatus.OK);
+    }
+
+
+    @PostMapping(path = "/uploadPhoto/{id}")
+    public void uploadPhoto(MultipartFile file, @PathVariable String id) throws Exception{
+        User p= userDao.findById(id).get();
+        p.setPhotoName(file.getOriginalFilename());
+        Files.write(Paths.get(System.getProperty("user.home")+"/ecom/products/"+p.getPhotoName()),file.getBytes());
+        userDao.save(p);
     }
 }
