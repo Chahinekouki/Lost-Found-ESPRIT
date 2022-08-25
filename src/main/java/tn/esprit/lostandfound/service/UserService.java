@@ -10,17 +10,24 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import tn.esprit.lostandfound.dao.ImageRepository;
 import tn.esprit.lostandfound.dao.RoleDao;
 import tn.esprit.lostandfound.dao.UserDao;
+import tn.esprit.lostandfound.entity.ImageModel;
 import tn.esprit.lostandfound.entity.Role;
 import tn.esprit.lostandfound.entity.User;
 import tn.esprit.lostandfound.service.dto.UserDTO;
 
+import java.awt.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.zip.DataFormatException;
+import java.util.zip.Inflater;
 
 @Service
 public class UserService {
@@ -29,6 +36,9 @@ public class UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private ImageRepository imageRepository;
 
     @Autowired
     private RoleDao roleDao;
@@ -111,19 +121,60 @@ public class UserService {
         return userDao.save(user);
     }
     public Page<UserDTO> getlistUsers(Pageable pageable) {
-        return  userDao.findAll(pageable).map(u-> UserDTO.builder()
-                .identifiant(u.getId())
-                .userFirstName(u.getUserFirstName())
-                .userLastName(u.getUserLastName())
-                .tel(u.getTel())
-                .email(u.getEmail())
-                .isBanned(u.getBanned())
-                .authorities(u.getRole().stream()
-                        .map(Role::getRoleName)
-                        .collect(Collectors.toSet()))
-                .build()
+        return  userDao.findAll(pageable).map(u-> {
+            System.out.println("idddddddddd:  " +u.getImage().getId());
+                    try {
+
+                        return UserDTO.builder()
+                                .identifiant(u.getId())
+                                .userFirstName(u.getUserFirstName())
+                                .userLastName(u.getUserLastName())
+                                .tel(u.getTel())
+                                .email(u.getEmail())
+                                .isBanned(u.getBanned())
+                                .image(decImage(Long.valueOf(u.getImage().getId())))
+                                .authorities(u.getRole().stream()
+                                        .map(Role::getRoleName)
+                                        .collect(Collectors.toSet()))
+                                .build();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("eerreeur");
+                    return null ;
+                }
         );
 
+    }
+
+
+    public ImageModel decImage (Long id) throws Exception {
+        final Optional<ImageModel> retrievedImage = imageRepository.findById(id);
+        System.out.println("image recu" +retrievedImage);
+        ImageModel img = new ImageModel(retrievedImage.get().getName(), retrievedImage.get().getType(),
+                decompressBytes(retrievedImage.get().getPicByte()));
+        System.out.println("image recu2" +img);
+        return img;
+
+    }
+
+    // uncompress the image bytes before returning it to the angular application
+    public static byte[] decompressBytes(byte[] data) {
+        Inflater inflater = new Inflater();
+        inflater.setInput(data);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+        byte[] buffer = new byte[1024];
+        try {
+            while (!inflater.finished()) {
+                int count = inflater.inflate(buffer);
+                outputStream.write(buffer, 0, count);
+            }
+            outputStream.close();
+        } catch (IOException ioe) {
+        } catch (DataFormatException e) {
+        }
+        return outputStream.toByteArray();
     }
 
     public void banUser(String id) throws Exception {

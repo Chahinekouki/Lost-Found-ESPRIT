@@ -44,6 +44,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/authenticate",
                 "/registerNewUser",
                 "/getAll/pagination",
+                "/getAll",
                 "/image/upload/{id}",
                 "/image/get/{id}").permitAll()
                 .antMatchers(HttpHeaders.ALLOW).permitAll()

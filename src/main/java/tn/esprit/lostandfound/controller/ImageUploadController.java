@@ -49,6 +49,7 @@ public class ImageUploadController {
         return ResponseEntity.status(HttpStatus.OK);
     }
 
+
     @GetMapping(path = { "/image/get/{imageName}" })
     public ImageModel getImage(@PathVariable("imageName") String imageName) throws IOException {
 
@@ -78,7 +79,6 @@ public class ImageUploadController {
 
         return outputStream.toByteArray();
     }
-
     // uncompress the image bytes before returning it to the angular application
     public static byte[] decompressBytes(byte[] data) {
         Inflater inflater = new Inflater();
@@ -96,4 +96,5 @@ public class ImageUploadController {
         }
         return outputStream.toByteArray();
     }
+
 }

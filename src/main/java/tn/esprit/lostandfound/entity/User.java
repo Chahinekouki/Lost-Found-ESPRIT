@@ -15,7 +15,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private String tel;
     private String email;
     private Boolean isBanned=Boolean.FALSE;
-    private String photoName;
+
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "USER_ROLE",
@@ -101,13 +101,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
         isBanned = banned;
     }
 
-    public String getPhotoName() {
-        return photoName;
-    }
 
-    public void setPhotoName(String photoName) {
-        this.photoName = photoName;
-    }
 
     public ImageModel getImage() {
         return image;

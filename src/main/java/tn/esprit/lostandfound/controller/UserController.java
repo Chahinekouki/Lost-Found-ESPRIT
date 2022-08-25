@@ -93,6 +93,16 @@ public class UserController {
         return new ResponseEntity<>(page.getContent(), HttpStatus.OK);
     }
 
+    @GetMapping("/getAll")
+    public ResponseEntity<List<UserDTO>> getAllUser(Pageable pageable) {
+
+        final Page<UserDTO> page = userService.getlistUsers(pageable);
+
+
+        //
+        return new ResponseEntity<>(page.getContent(), HttpStatus.OK);
+    }
+
     /**
      * TODO Documentation
      *
