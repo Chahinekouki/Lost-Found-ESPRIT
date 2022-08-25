@@ -105,11 +105,5 @@ public class UserController {
     }
 
 
-    @PostMapping(path = "/uploadPhoto/{id}")
-    public void uploadPhoto(MultipartFile file, @PathVariable String id) throws Exception{
-        User p= userDao.findById(id).get();
-        p.setPhotoName(file.getOriginalFilename());
-        Files.write(Paths.get(System.getProperty("user.home")+"/ecom/products/"+p.getPhotoName()),file.getBytes());
-        userDao.save(p);
-    }
+
 }

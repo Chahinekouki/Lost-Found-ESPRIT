@@ -28,6 +28,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
     )
     private Set<Role> role;
 
+    @OneToOne
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    private ImageModel image;
+
+
+
+
+
 
 
     public String getId() {
@@ -99,5 +107,13 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setPhotoName(String photoName) {
         this.photoName = photoName;
+    }
+
+    public ImageModel getImage() {
+        return image;
+    }
+
+    public void setImage(ImageModel image) {
+        this.image = image;
     }
 }
