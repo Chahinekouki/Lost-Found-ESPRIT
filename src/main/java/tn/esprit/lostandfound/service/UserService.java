@@ -38,13 +38,15 @@ public class UserService {
     private UserDao userDao;
 
     @Autowired
-    private ImageRepository imageRepository;
+    private ImageService imageService;
 
     @Autowired
     private RoleDao roleDao;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+
 
     public void initRoleAndUser() {
 
@@ -132,7 +134,7 @@ public class UserService {
                                 .tel(u.getTel())
                                 .email(u.getEmail())
                                 .isBanned(u.getBanned())
-                                .image(decImage(Long.valueOf(u.getImage().getId())))
+                                .image(this.imageService.decImage(Long.valueOf(u.getImage().getId())))
                                 .authorities(u.getRole().stream()
                                         .map(Role::getRoleName)
                                         .collect(Collectors.toSet()))
@@ -149,15 +151,7 @@ public class UserService {
     }
 
 
-    public ImageModel decImage (Long id) throws Exception {
-        final Optional<ImageModel> retrievedImage = imageRepository.findById(id);
-        System.out.println("image recu" +retrievedImage);
-        ImageModel img = new ImageModel(retrievedImage.get().getName(), retrievedImage.get().getType(),
-                decompressBytes(retrievedImage.get().getPicByte()));
-        System.out.println("image recu2" +img);
-        return img;
 
-    }
 
     // uncompress the image bytes before returning it to the angular application
     public static byte[] decompressBytes(byte[] data) {
