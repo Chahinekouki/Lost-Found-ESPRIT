@@ -79,19 +79,14 @@ public class UserController {
     }
 
 
-    /**
-     * TODO Documentation
-     *
-     * @param pageable
-     * @return
-     */
-    @GetMapping("/getAll/pagination")
+
+   /* @GetMapping("/getAll/pagination")
 
     public ResponseEntity<List<UserDTO>> getAllQcmsP(Pageable pageable) {
 
         final Page<UserDTO> page = userService.getlistUsers(pageable);
         return new ResponseEntity<>(page.getContent(), HttpStatus.OK);
-    }
+    }*/
 
     @GetMapping("/getAll")
     public ResponseEntity<List<UserDTO>> getAllUser(Pageable pageable) {
@@ -108,7 +103,7 @@ public class UserController {
      *
      */
     @GetMapping("/userDetails/{id}")
-    @PreAuthorize("hasRole('Admin') or hasRole('User')")
+
     public ResponseEntity<UserDTO> UserDetails (@PathVariable("id") String id) throws Exception {
         log.debug("REST request ban user", id);
         return new ResponseEntity<>(userService.getUser(id), HttpStatus.OK);

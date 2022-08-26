@@ -41,6 +41,9 @@ public class UserService {
     private ImageService imageService;
 
     @Autowired
+    private ImageRepository imageRepository;
+
+    @Autowired
     private RoleDao roleDao;
 
     @Autowired
@@ -60,6 +63,8 @@ public class UserService {
         userRole.setRoleDescription("Default role for newly created record");
         roleDao.save(userRole);
 
+        Optional<ImageModel> img = imageRepository.findById(Long.valueOf(5));
+
         User adminUser = new User();
         adminUser.setId("213JMT1111");
         adminUser.setUserPassword(getEncodedPassword("chahine123"));
@@ -68,6 +73,7 @@ public class UserService {
         adminUser.setCreatedBy("Serveur");
         adminUser.setEmail("chahinekouki1998@gmail.com");
         adminUser.setTel("+21653000000");
+        adminUser.setImage(img.get());
         Set<Role> adminRoles = new HashSet<>();
         adminRoles.add(adminRole);
         adminUser.setRole(adminRoles);
@@ -82,6 +88,7 @@ public class UserService {
         adminUser1.setEmail("AichaSalhi@gmail.com");
         adminUser1.setBanned(Boolean.TRUE);
         adminUser1.setTel("+21653000000");
+        adminUser1.setImage(img.get());
         Set<Role> userRoles1 = new HashSet<>();
         userRoles1.add(userRole);
         adminUser1.setRole(userRoles1);
@@ -96,6 +103,7 @@ public class UserService {
         User2.setEmail("Behijabenghorbel@gmail.com");
         User2.setBanned(Boolean.TRUE);
         User2.setTel("+21653000000");
+        User2.setImage(img.get());
         Set<Role> userRoles2 = new HashSet<>();
         userRoles2.add(userRole);
         User2.setRole(userRoles2);
@@ -191,7 +199,7 @@ public class UserService {
         } else throw new Exception(String.valueOf(HttpStatus.NOT_ACCEPTABLE));
     }
 
-    public UserDTO getUser(String id) throws Exception {
+    public UserDTO getUser(String id)  {
         Optional<User> user = userDao.findById(id);
         if (!user.isPresent()) return UserDTO.builder().build();
         return UserDTO.builder()
@@ -201,6 +209,7 @@ public class UserService {
                 .tel(user.get().getTel())
                 .email(user.get().getEmail())
                 .isBanned(user.get().getBanned())
+                .image(this.imageService.decImage(Long.valueOf(user.get().getImage().getId())))
                 .authorities(user.get().getRole().stream()
                         .map(Role::getRoleName)
                         .collect(Collectors.toSet()))
