@@ -86,7 +86,7 @@ public class UserService {
         adminUser1.setCreatedBy("Serveur");
         adminUser1.setUserLastName("Salhi");
         adminUser1.setEmail("AichaSalhi@gmail.com");
-        adminUser1.setBanned(Boolean.TRUE);
+        adminUser1.setBanned(Boolean.FALSE);
         adminUser1.setTel("+21653000000");
         adminUser1.setImage(img.get());
         Set<Role> userRoles1 = new HashSet<>();

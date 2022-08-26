@@ -103,7 +103,7 @@ public class UserController {
      *
      */
     @GetMapping("/userDetails/{id}")
-
+    @PreAuthorize("hasRole('Admin') or hasRole('User')")
     public ResponseEntity<UserDTO> UserDetails (@PathVariable("id") String id) throws Exception {
         log.debug("REST request ban user", id);
         return new ResponseEntity<>(userService.getUser(id), HttpStatus.OK);
