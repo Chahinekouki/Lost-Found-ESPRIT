@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tn.esprit.lostandfound.dao.ImageRepository;
 import tn.esprit.lostandfound.dao.RoleDao;
 import tn.esprit.lostandfound.dao.UserDao;
@@ -21,6 +23,7 @@ import tn.esprit.lostandfound.service.dto.UserDTO;
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -214,6 +217,22 @@ public class UserService {
                         .map(Role::getRoleName)
                         .collect(Collectors.toSet()))
                 .build();
+    }
+
+    @Transactional
+    public void updateQuestion(UserDTO userDTO) {
+        Optional<User> user = userDao.findById(userDTO.getIdentifiant());
+        if(user.isPresent()) {
+                user.get().setEmail(userDTO.getEmail());
+                user.get().setTel(userDTO.getTel());
+
+                userDao.save(user.get());
+                log.debug("update Information for Question: {}", user);
+            }
+         else {
+            //TODO create an exception handler
+            log.error("La question n'existe pas dans la base de données {}", user.get().getId());
+        }
     }
 
 
