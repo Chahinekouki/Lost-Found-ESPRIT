@@ -8,12 +8,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tn.esprit.lostandfound.dao.UserDao;
+import tn.esprit.lostandfound.entity.ImageModel;
 import tn.esprit.lostandfound.entity.User;
 import tn.esprit.lostandfound.service.UserService;
 import tn.esprit.lostandfound.service.dto.UserDTO;
@@ -78,6 +81,16 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/update/{id}/{email}/{tel}")
+    @PreAuthorize("hasRole('User')")
+    public ResponseEntity<Void> updateQuestion( @PathVariable("id") String id,@PathVariable("email") String email,@PathVariable("tel") String tel) {
+
+        User user = userDao.findById(id).get();
+        user.setEmail(email);
+        user.setTel(tel);
+        userDao.save(user);
+        return ResponseEntity.ok().build();
+    }
 
 
    /* @GetMapping("/getAll/pagination")
