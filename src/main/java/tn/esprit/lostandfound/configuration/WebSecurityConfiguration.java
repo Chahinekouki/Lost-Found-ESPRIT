@@ -47,7 +47,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/getAll",
                 "/image/upload/{id}",
                 "/image/get/{id}",
-                "/update/{id}").permitAll()
+                "/update/{id}",
+                "/objet/getAll").permitAll()
                 .antMatchers(HttpHeaders.ALLOW).permitAll()
                 .anyRequest().authenticated()
                 .and()
