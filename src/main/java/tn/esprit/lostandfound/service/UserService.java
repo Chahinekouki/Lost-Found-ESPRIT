@@ -77,7 +77,7 @@ public class UserService {
         adminUser.setCreatedBy("Serveur");
         adminUser.setEmail("chahinekouki1998@gmail.com");
         adminUser.setTel("+21653000000");
-        adminUser.setImage(img.get());
+
         Set<Role> adminRoles = new HashSet<>();
         adminRoles.add(adminRole);
         adminUser.setRole(adminRoles);
@@ -93,7 +93,7 @@ public class UserService {
         adminUser1.setEmail("AichaSalhi@gmail.com");
         adminUser1.setBanned(Boolean.FALSE);
         adminUser1.setTel("+21653000000");
-        adminUser1.setImage(img.get());
+
         Set<Role> userRoles1 = new HashSet<>();
         userRoles1.add(userRole);
         adminUser1.setRole(userRoles1);
@@ -109,7 +109,8 @@ public class UserService {
         User2.setEmail("Behijabenghorbel@gmail.com");
         User2.setBanned(Boolean.TRUE);
         User2.setTel("+21653000000");
-        User2.setImage(img.get());
+
+
         Set<Role> userRoles2 = new HashSet<>();
         userRoles2.add(userRole);
         User2.setRole(userRoles2);
