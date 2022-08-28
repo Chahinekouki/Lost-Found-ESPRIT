@@ -82,8 +82,8 @@ public class UserController {
     }
 
     @PostMapping("/update/{id}/{email}/{tel}/{adress}")
-    @PreAuthorize("hasRole('User')")
-    public ResponseEntity<Void> updateQuestion( @PathVariable("id") String id,@PathVariable("email") String email,
+    @PreAuthorize("hasRole('User') or hasRole('Admin')")
+    public ResponseEntity<Void> updateUser( @PathVariable("id") String id,@PathVariable("email") String email,
                                                 @PathVariable("tel") String tel,
                                                 @PathVariable("adress") String adress) {
 
