@@ -55,7 +55,6 @@ public class UserService {
 
 
     public void initRoleAndUser() {
-
         Role adminRole = new Role();
         adminRole.setRoleName("Admin");
         adminRole.setRoleDescription("Admin role");
@@ -66,7 +65,7 @@ public class UserService {
         userRole.setRoleDescription("Default role for newly created record");
         roleDao.save(userRole);
 
-        Optional<ImageModel> img = imageRepository.findById(Long.valueOf(5));
+        Optional<ImageModel> img = imageRepository.findById(Long.valueOf(1));
 
         User adminUser = new User();
         adminUser.setId("213JMT1111");
@@ -75,6 +74,7 @@ public class UserService {
         adminUser.setUserLastName("kouki");
         adminUser.setAdress("Rue Khairedine tunis");
         adminUser.setCreatedBy("Serveur");
+        adminUser.setImage(img.get());
         adminUser.setEmail("chahinekouki1998@gmail.com");
         adminUser.setTel("+21653000000");
 
@@ -89,6 +89,7 @@ public class UserService {
         adminUser1.setUserFirstName("Aicha");
         adminUser1.setCreatedBy("Serveur");
         adminUser1.setUserLastName("Salhi");
+        adminUser1.setImage(img.get());
         adminUser1.setAdress("Rue Liberté tunis");
         adminUser1.setEmail("AichaSalhi@gmail.com");
         adminUser1.setBanned(Boolean.FALSE);
@@ -105,6 +106,7 @@ public class UserService {
         User2.setUserFirstName("behija");
         User2.setCreatedBy("Serveur");
         User2.setUserLastName("ben ghorbel");
+        User2.setImage(img.get());
         User2.setAdress("Avenue mohamed 5 tunis");
         User2.setEmail("Behijabenghorbel@gmail.com");
         User2.setBanned(Boolean.TRUE);
