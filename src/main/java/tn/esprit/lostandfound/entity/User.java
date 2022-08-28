@@ -14,6 +14,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private String userPassword;
     private String tel;
     private String email;
+    private String adress;
     private Boolean isBanned=Boolean.FALSE;
 
 
@@ -109,5 +110,13 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setImage(ImageModel image) {
         this.image = image;
+    }
+
+    public String getAdress() {
+        return adress;
+    }
+
+    public void setAdress(String adress) {
+        this.adress = adress;
     }
 }

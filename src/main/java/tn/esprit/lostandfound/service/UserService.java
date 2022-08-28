@@ -73,6 +73,7 @@ public class UserService {
         adminUser.setUserPassword(getEncodedPassword("chahine123"));
         adminUser.setUserFirstName("chahine");
         adminUser.setUserLastName("kouki");
+        adminUser.setAdress("Rue Khairedine tunis");
         adminUser.setCreatedBy("Serveur");
         adminUser.setEmail("chahinekouki1998@gmail.com");
         adminUser.setTel("+21653000000");
@@ -88,6 +89,7 @@ public class UserService {
         adminUser1.setUserFirstName("Aicha");
         adminUser1.setCreatedBy("Serveur");
         adminUser1.setUserLastName("Salhi");
+        adminUser1.setAdress("Rue Liberté tunis");
         adminUser1.setEmail("AichaSalhi@gmail.com");
         adminUser1.setBanned(Boolean.FALSE);
         adminUser1.setTel("+21653000000");
@@ -103,6 +105,7 @@ public class UserService {
         User2.setUserFirstName("behija");
         User2.setCreatedBy("Serveur");
         User2.setUserLastName("ben ghorbel");
+        User2.setAdress("Avenue mohamed 5 tunis");
         User2.setEmail("Behijabenghorbel@gmail.com");
         User2.setBanned(Boolean.TRUE);
         User2.setTel("+21653000000");
@@ -145,6 +148,7 @@ public class UserService {
                                 .tel(u.getTel())
                                 .email(u.getEmail())
                                 .isBanned(u.getBanned())
+                                .adress(u.getAdress())
                                 .image(this.imageService.decImage(Long.valueOf(u.getImage().getId())))
                                 .authorities(u.getRole().stream()
                                         .map(Role::getRoleName)
@@ -212,6 +216,7 @@ public class UserService {
                 .tel(user.get().getTel())
                 .email(user.get().getEmail())
                 .isBanned(user.get().getBanned())
+                .adress(user.get().getAdress())
                 .image(this.imageService.decImage(Long.valueOf(user.get().getImage().getId())))
                 .authorities(user.get().getRole().stream()
                         .map(Role::getRoleName)

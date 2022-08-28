@@ -81,13 +81,16 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/update/{id}/{email}/{tel}")
+    @PostMapping("/update/{id}/{email}/{tel}/{adress}")
     @PreAuthorize("hasRole('User')")
-    public ResponseEntity<Void> updateQuestion( @PathVariable("id") String id,@PathVariable("email") String email,@PathVariable("tel") String tel) {
+    public ResponseEntity<Void> updateQuestion( @PathVariable("id") String id,@PathVariable("email") String email,
+                                                @PathVariable("tel") String tel,
+                                                @PathVariable("adress") String adress) {
 
         User user = userDao.findById(id).get();
         user.setEmail(email);
         user.setTel(tel);
+        user.setAdress(adress);
         userDao.save(user);
         return ResponseEntity.ok().build();
     }
