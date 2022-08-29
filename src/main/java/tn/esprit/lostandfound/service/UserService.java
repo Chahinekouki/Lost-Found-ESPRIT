@@ -55,7 +55,6 @@ public class UserService {
 
 
     public void initRoleAndUser() {
-
         Role adminRole = new Role();
         adminRole.setRoleName("Admin");
         adminRole.setRoleDescription("Admin role");
@@ -66,17 +65,19 @@ public class UserService {
         userRole.setRoleDescription("Default role for newly created record");
         roleDao.save(userRole);
 
-        Optional<ImageModel> img = imageRepository.findById(Long.valueOf(5));
+        Optional<ImageModel> img = imageRepository.findById(Long.valueOf(2));
 
         User adminUser = new User();
         adminUser.setId("213JMT1111");
         adminUser.setUserPassword(getEncodedPassword("chahine123"));
         adminUser.setUserFirstName("chahine");
         adminUser.setUserLastName("kouki");
+        adminUser.setAdress("Rue Khairedine tunis");
         adminUser.setCreatedBy("Serveur");
+        adminUser.setImage(img.get());
         adminUser.setEmail("chahinekouki1998@gmail.com");
         adminUser.setTel("+21653000000");
-        adminUser.setImage(img.get());
+
         Set<Role> adminRoles = new HashSet<>();
         adminRoles.add(adminRole);
         adminUser.setRole(adminRoles);
@@ -88,10 +89,12 @@ public class UserService {
         adminUser1.setUserFirstName("Aicha");
         adminUser1.setCreatedBy("Serveur");
         adminUser1.setUserLastName("Salhi");
+        adminUser1.setImage(img.get());
+        adminUser1.setAdress("Rue Liberté tunis");
         adminUser1.setEmail("AichaSalhi@gmail.com");
         adminUser1.setBanned(Boolean.FALSE);
         adminUser1.setTel("+21653000000");
-        adminUser1.setImage(img.get());
+
         Set<Role> userRoles1 = new HashSet<>();
         userRoles1.add(userRole);
         adminUser1.setRole(userRoles1);
@@ -103,10 +106,13 @@ public class UserService {
         User2.setUserFirstName("behija");
         User2.setCreatedBy("Serveur");
         User2.setUserLastName("ben ghorbel");
+        User2.setImage(img.get());
+        User2.setAdress("Avenue mohamed 5 tunis");
         User2.setEmail("Behijabenghorbel@gmail.com");
         User2.setBanned(Boolean.TRUE);
         User2.setTel("+21653000000");
-        User2.setImage(img.get());
+
+
         Set<Role> userRoles2 = new HashSet<>();
         userRoles2.add(userRole);
         User2.setRole(userRoles2);
@@ -145,6 +151,7 @@ public class UserService {
                                 .tel(u.getTel())
                                 .email(u.getEmail())
                                 .isBanned(u.getBanned())
+                                .adress(u.getAdress())
                                 .image(this.imageService.decImage(Long.valueOf(u.getImage().getId())))
                                 .authorities(u.getRole().stream()
                                         .map(Role::getRoleName)
@@ -212,6 +219,7 @@ public class UserService {
                 .tel(user.get().getTel())
                 .email(user.get().getEmail())
                 .isBanned(user.get().getBanned())
+                .adress(user.get().getAdress())
                 .image(this.imageService.decImage(Long.valueOf(user.get().getImage().getId())))
                 .authorities(user.get().getRole().stream()
                         .map(Role::getRoleName)
