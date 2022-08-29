@@ -1,9 +1,6 @@
 package tn.esprit.lostandfound.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
@@ -22,7 +19,9 @@ public class ObjetPerdu {
 
     private Date date;
 
-
+    @OneToOne
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    private ImageModel image;
 
     
 
@@ -74,6 +73,14 @@ public class ObjetPerdu {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public ImageModel getImage() {
+        return image;
+    }
+
+    public void setImage(ImageModel image) {
+        this.image = image;
     }
 
     @Override

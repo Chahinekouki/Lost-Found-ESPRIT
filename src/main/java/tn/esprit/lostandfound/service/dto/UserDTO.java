@@ -18,7 +18,6 @@ public class UserDTO {
     private String userLastName;
     private String tel;
     private String email;
-
     private Boolean isBanned;
     private String adress;
     private ImageModel image;
