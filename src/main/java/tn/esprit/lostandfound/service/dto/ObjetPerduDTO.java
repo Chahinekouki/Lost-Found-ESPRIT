@@ -3,7 +3,9 @@ package tn.esprit.lostandfound.service.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import tn.esprit.lostandfound.entity.ImageModel;
 
+import java.awt.*;
 import java.sql.Date;
 
 @Data
@@ -21,6 +23,8 @@ public class ObjetPerduDTO {
     private String type;
 
     private Date date;
+
+    private ImageModel image;
 
     public Long getId() {
         return id;
@@ -70,12 +74,13 @@ public class ObjetPerduDTO {
         this.date = date;
     }
 
-    public ObjetPerduDTO(Long id ,String nom, String description, String etat, String type, Date date) {
+    public ObjetPerduDTO(Long id , String nom, String description, String etat, String type, Date date, ImageModel img) {
         this.id=id;
         this.nom = nom;
         this.description = description;
         this.etat = etat;
         this.type = type;
         this.date = date;
+        this.image=img;
     }
 }
