@@ -4,17 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.lostandfound.dao.ImageRepository;
 import tn.esprit.lostandfound.dao.ObjetPerduDao;
 import tn.esprit.lostandfound.dao.RoleDao;
 import tn.esprit.lostandfound.entity.ImageModel;
 import tn.esprit.lostandfound.entity.ObjetPerdu;
 import tn.esprit.lostandfound.entity.Role;
+import tn.esprit.lostandfound.entity.User;
 import tn.esprit.lostandfound.service.dto.ObjetPerduDTO;
 import tn.esprit.lostandfound.service.dto.UserDTO;
 
+import java.io.IOException;
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -77,6 +82,12 @@ public class ObjetPerduService {
                 }
         );
 
+    }
+
+
+    public ObjetPerdu registerNewObjet(ObjetPerdu objet)  {
+        objet.setEtat("en attente");
+        return objetPerduDao.save(objet);
     }
 
 
