@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tn.esprit.lostandfound.dao.UserDao;
+import tn.esprit.lostandfound.entity.Chat;
 import tn.esprit.lostandfound.entity.ImageModel;
 import tn.esprit.lostandfound.entity.User;
 import tn.esprit.lostandfound.service.UserService;
@@ -125,6 +126,9 @@ public class UserController {
         return new ResponseEntity<>(userService.getUser(id), HttpStatus.OK);
     }
 
-
+    @GetMapping("/getUserByNickname/{user}")
+    public User getChats(@PathVariable String user){
+        return userDao.findByUserFirstName(user).get();
+    }
 
 }
