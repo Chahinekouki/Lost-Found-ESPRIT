@@ -65,7 +65,7 @@ public class UserService {
         userRole.setRoleDescription("Default role for newly created record");
         roleDao.save(userRole);
 
-        Optional<ImageModel> img = imageRepository.findById(Long.valueOf(2));
+        Optional<ImageModel> img = imageRepository.findById(Long.valueOf(1));
 
         User adminUser = new User();
         adminUser.setId("213JMT1111");

@@ -28,10 +28,7 @@ public class ObjetPerduController {
     @Autowired
     private ObjetPerduDao objetPerduDao;
 
-    @PostConstruct
-    public void initRoleAndUser() {
-        objetPerduService.initObjet();
-    }
+
 
     @GetMapping("/objet/getAll")
     public ResponseEntity<List<ObjetPerduDTO>> getAllObjet(Pageable pageable) {

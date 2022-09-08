@@ -16,9 +16,12 @@ import tn.esprit.lostandfound.entity.Chat;
 import tn.esprit.lostandfound.entity.Message;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200/**")
@@ -40,15 +43,27 @@ public class ChatController {
         message.setChat_id(createAndOrGetChat(to));
         message.setT_stamp(generateTimeStamp());
         message = messageDAO.save(message);
+        Chat ce = chatDAO.findByName(to);
+        ce.setLastMessage(LocalDateTime.now());
+        chatDAO.save(ce);
+
         simpMessagingTemplate.convertAndSend("/topic/messages/" + to, message);
     }
+
+
+
 
     @PostMapping("/getChats")
 
 
     public List<Chat> getChats(@RequestBody String user){
 
-        return chatDAO.findByPartecipant(user);
+        List<Chat> ce= chatDAO.findByPartecipant(user);
+        List<Chat> sortedList = ce.stream()
+                .sorted(Comparator.comparing(Chat :: getLastMessage).reversed())
+                .collect(Collectors.toList());
+        System.out.println(ce);
+        return  sortedList;
     }
 
     //returns an empty list if the chat doesn't exist

@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 @Entity(name="Chat")
 @Table(name = "CHATS")
@@ -19,6 +20,9 @@ public class Chat {
 
     @Column(name = "name")
     private String name;
+
+    @Column
+    private LocalDateTime lastMessage;
 
 
     public Chat() {}
@@ -43,4 +47,11 @@ public class Chat {
         this.name = name;
     }
 
+    public LocalDateTime getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(LocalDateTime lastMessage) {
+        this.lastMessage = lastMessage;
+    }
 }

@@ -35,29 +35,6 @@ public class ObjetPerduService {
     @Autowired
     private ImageService imageService;
 
-    public void initObjet() {
-        Optional<ImageModel> img = imageRepository.findById(Long.valueOf(2));
-        ObjetPerdu ob = new ObjetPerdu();
-        ob.setNom("objet1");
-        ob.setDescription("pc perdu le 2 juillet ");
-        ob.setEtat("Rendu");
-        ob.setImage(img.get());
-        String str="2015-03-31";
-        Date date= java.sql.Date.valueOf(str);//converting string into sql date.
-        ob.setDate(date);
-        objetPerduDao.save(ob);
-
-
-        ObjetPerdu ob1 = new ObjetPerdu();
-        ob1.setNom("objet2");
-        ob1.setImage(img.get());
-        ob1.setDescription("tel perdu le 2 juillet ");
-        ob1.setEtat("en attente");
-        String str2="2020-03-31";
-        Date date2= java.sql.Date.valueOf(str2);//converting string into sql date.
-        ob1.setDate(date2);
-        objetPerduDao.save(ob1);
-    }
 
     public Page<ObjetPerduDTO> getlistObjet(Pageable pageable) {
         return  objetPerduDao.findAll(pageable).map(u-> {
