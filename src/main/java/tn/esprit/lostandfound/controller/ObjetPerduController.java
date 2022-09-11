@@ -17,7 +17,9 @@ import tn.esprit.lostandfound.service.dto.UserDTO;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ObjetPerduController {
@@ -46,5 +48,15 @@ public class ObjetPerduController {
         return objetPerduService.registerNewObjet(objet);
     }
 
+    @DeleteMapping("/deleteObjet/{id}")
+    public Map<String, Boolean> deleteEmployee(@PathVariable(value = "id") Long id){
 
+        ObjetPerdu objet = objetPerduDao.findById(id).get();
+
+
+        objetPerduDao.delete(objet);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return response;
+    }
 }
