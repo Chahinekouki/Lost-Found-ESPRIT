@@ -6,19 +6,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tn.esprit.lostandfound.dao.ImageRepository;
 import tn.esprit.lostandfound.dao.RoleDao;
 import tn.esprit.lostandfound.dao.UserDao;
+import tn.esprit.lostandfound.entity.ImageModel;
 import tn.esprit.lostandfound.entity.Role;
 import tn.esprit.lostandfound.entity.User;
 import tn.esprit.lostandfound.service.dto.UserDTO;
 
+import java.awt.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.zip.DataFormatException;
+import java.util.zip.Inflater;
 
 @Service
 public class UserService {
@@ -29,13 +41,20 @@ public class UserService {
     private UserDao userDao;
 
     @Autowired
+    private ImageService imageService;
+
+    @Autowired
+    private ImageRepository imageRepository;
+
+    @Autowired
     private RoleDao roleDao;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void initRoleAndUser() {
 
+
+    public void initRoleAndUser() {
         Role adminRole = new Role();
         adminRole.setRoleName("Admin");
         adminRole.setRoleDescription("Admin role");
@@ -46,14 +65,19 @@ public class UserService {
         userRole.setRoleDescription("Default role for newly created record");
         roleDao.save(userRole);
 
+        Optional<ImageModel> img = imageRepository.findById(Long.valueOf(1));
+
         User adminUser = new User();
         adminUser.setId("213JMT1111");
         adminUser.setUserPassword(getEncodedPassword("chahine123"));
         adminUser.setUserFirstName("chahine");
         adminUser.setUserLastName("kouki");
+        adminUser.setAdress("Rue Khairedine tunis");
         adminUser.setCreatedBy("Serveur");
+        adminUser.setImage(img.get());
         adminUser.setEmail("chahinekouki1998@gmail.com");
         adminUser.setTel("+21653000000");
+
         Set<Role> adminRoles = new HashSet<>();
         adminRoles.add(adminRole);
         adminUser.setRole(adminRoles);
@@ -65,9 +89,12 @@ public class UserService {
         adminUser1.setUserFirstName("Aicha");
         adminUser1.setCreatedBy("Serveur");
         adminUser1.setUserLastName("Salhi");
+        adminUser1.setImage(img.get());
+        adminUser1.setAdress("Rue Liberté tunis");
         adminUser1.setEmail("AichaSalhi@gmail.com");
-        adminUser1.setBanned(Boolean.TRUE);
+        adminUser1.setBanned(Boolean.FALSE);
         adminUser1.setTel("+21653000000");
+
         Set<Role> userRoles1 = new HashSet<>();
         userRoles1.add(userRole);
         adminUser1.setRole(userRoles1);
@@ -79,9 +106,13 @@ public class UserService {
         User2.setUserFirstName("behija");
         User2.setCreatedBy("Serveur");
         User2.setUserLastName("ben ghorbel");
+        User2.setImage(img.get());
+        User2.setAdress("Avenue mohamed 5 tunis");
         User2.setEmail("Behijabenghorbel@gmail.com");
         User2.setBanned(Boolean.TRUE);
         User2.setTel("+21653000000");
+
+
         Set<Role> userRoles2 = new HashSet<>();
         userRoles2.add(userRole);
         User2.setRole(userRoles2);
@@ -99,6 +130,7 @@ public class UserService {
     }
 
     public User registerNewUser(User user) {
+
         Role role = roleDao.findById("User").get();
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(role);
@@ -108,19 +140,53 @@ public class UserService {
         return userDao.save(user);
     }
     public Page<UserDTO> getlistUsers(Pageable pageable) {
-        return  userDao.findAll(pageable).map(u-> UserDTO.builder()
-                .identifiant(u.getId())
-                .userFirstName(u.getUserFirstName())
-                .userLastName(u.getUserLastName())
-                .tel(u.getTel())
-                .email(u.getEmail())
-                .isBanned(u.getBanned())
-                .authorities(u.getRole().stream()
-                        .map(Role::getRoleName)
-                        .collect(Collectors.toSet()))
-                .build()
+        return  userDao.findAll(pageable).map(u-> {
+            System.out.println("idddddddddd:  " +u.getImage().getId());
+                    try {
+
+                        return UserDTO.builder()
+                                .identifiant(u.getId())
+                                .userFirstName(u.getUserFirstName())
+                                .userLastName(u.getUserLastName())
+                                .tel(u.getTel())
+                                .email(u.getEmail())
+                                .isBanned(u.getBanned())
+                                .adress(u.getAdress())
+                                .image(this.imageService.decImage(Long.valueOf(u.getImage().getId())))
+                                .authorities(u.getRole().stream()
+                                        .map(Role::getRoleName)
+                                        .collect(Collectors.toSet()))
+                                .build();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("eerreeur");
+                    return null ;
+                }
         );
 
+    }
+
+
+
+
+    // uncompress the image bytes before returning it to the angular application
+    public static byte[] decompressBytes(byte[] data) {
+        Inflater inflater = new Inflater();
+        inflater.setInput(data);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+        byte[] buffer = new byte[1024];
+        try {
+            while (!inflater.finished()) {
+                int count = inflater.inflate(buffer);
+                outputStream.write(buffer, 0, count);
+            }
+            outputStream.close();
+        } catch (IOException ioe) {
+        } catch (DataFormatException e) {
+        }
+        return outputStream.toByteArray();
     }
 
     public void banUser(String id) throws Exception {
@@ -143,7 +209,7 @@ public class UserService {
         } else throw new Exception(String.valueOf(HttpStatus.NOT_ACCEPTABLE));
     }
 
-    public UserDTO getUser(String id) throws Exception {
+    public UserDTO getUser(String id)  {
         Optional<User> user = userDao.findById(id);
         if (!user.isPresent()) return UserDTO.builder().build();
         return UserDTO.builder()
@@ -153,10 +219,28 @@ public class UserService {
                 .tel(user.get().getTel())
                 .email(user.get().getEmail())
                 .isBanned(user.get().getBanned())
+                .adress(user.get().getAdress())
+                .image(this.imageService.decImage(Long.valueOf(user.get().getImage().getId())))
                 .authorities(user.get().getRole().stream()
                         .map(Role::getRoleName)
                         .collect(Collectors.toSet()))
                 .build();
+    }
+
+    @Transactional
+    public void updateQuestion(UserDTO userDTO) {
+        Optional<User> user = userDao.findById(userDTO.getIdentifiant());
+        if(user.isPresent()) {
+                user.get().setEmail(userDTO.getEmail());
+                user.get().setTel(userDTO.getTel());
+
+                userDao.save(user.get());
+                log.debug("update Information for Question: {}", user);
+            }
+         else {
+            //TODO create an exception handler
+            log.error("La question n'existe pas dans la base de données {}", user.get().getId());
+        }
     }
 
 

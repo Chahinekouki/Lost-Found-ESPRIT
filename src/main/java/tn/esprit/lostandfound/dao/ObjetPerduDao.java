@@ -4,13 +4,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import tn.esprit.lostandfound.entity.ObjetPerdu;
 import tn.esprit.lostandfound.entity.User;
 
-import java.util.Optional;
-
 @Repository
-public interface UserDao extends CrudRepository<User, String> {
-    Page<User> findAll(Pageable pageable);
-
-    Optional<User> findByUserFirstName(String name);
+public interface ObjetPerduDao extends CrudRepository<ObjetPerdu, Long> {
+    Page<ObjetPerdu> findAll (Pageable pageable);
 }
+

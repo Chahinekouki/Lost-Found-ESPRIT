@@ -2,6 +2,7 @@ package tn.esprit.lostandfound.service.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import tn.esprit.lostandfound.entity.ImageModel;
 import tn.esprit.lostandfound.entity.Role;
 import tn.esprit.lostandfound.entity.User;
 
@@ -18,18 +19,22 @@ public class UserDTO {
     private String tel;
     private String email;
     private Boolean isBanned;
+    private String adress;
+    private ImageModel image;
     private Set<String> authorities ;
 
     public UserDTO() {
     }
 
-    public UserDTO(String identifiant,String userFirstName, String userLastName, String tel, String email, Boolean isBanned, Set<String> authorities) {
+    public UserDTO(String identifiant,String userFirstName, String userLastName, String tel, String email, Boolean isBanned,String adress,ImageModel imageModel, Set<String> authorities) {
         this.identifiant=identifiant;
         this.userFirstName = userFirstName;
         this.userLastName = userLastName;
         this.tel = tel;
         this.email = email;
         this.isBanned = isBanned;
+        this.adress = adress;
+        this.image=imageModel;
         this.authorities = authorities;
     }
 
@@ -90,6 +95,30 @@ public class UserDTO {
 
     public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getIdentifiant() {
+        return identifiant;
+    }
+
+    public void setIdentifiant(String identifiant) {
+        this.identifiant = identifiant;
+    }
+
+    public ImageModel getImage() {
+        return image;
+    }
+
+    public void setImage(ImageModel image) {
+        this.image = image;
+    }
+
+    public String getAdress() {
+        return adress;
+    }
+
+    public void setAdress(String adress) {
+        this.adress = adress;
     }
 
     @Override
