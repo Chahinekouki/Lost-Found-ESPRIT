@@ -10,7 +10,7 @@ et nous mettrons en valeur cette dimension à l'aide du framework Spring Securit
 # Conception 
 # 1-Architecture logique 
 L'application "LOST & FOUND" adopte une architecture multi-couches pour garantir la modularité et la maintenabilité du code. Voici une vue d'ensemble de l'architecture logique :
-![Aperçu de la Plateforme E-sport](./Diagramme vierge (5).png)
+![Aperçu de la Plateforme E-sport](./Diagrammevierge(5).png)
 
 controller: Gère les requêtes HTTP et les interactions avec le frontend.
 service: Contient la logique métier de l'application.
