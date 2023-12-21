@@ -22,8 +22,11 @@ security: Gère la sécurité de l'application, utilisant Spring Security.
 ![Aperçu de la Plateforme E-sport](./Architecturephysique.png)
 # Interfaces 
 Liste des utilisateurs 
-![Aperçu de la Plateforme E-sport](./Captureusers.PNG)
+![List user](./Captureusers.PNG)
 Details d'un utilisateur 
-![Aperçu de la Plateforme E-sport](./captureeditchahine.PNG)
+![Detail user](./captureeditchahine.PNG)
+Interface de chat :
+Chat instantannée impelementé avec avec les webSocket :
+![Chat instantanné](./Capturechahine3.PNG.PNG)
 
 
