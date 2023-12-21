@@ -30,3 +30,9 @@ Chat instantannée impelementé avec avec les webSocket :
 ![Chat instantanné](./Capturechahine3.PNG)
 
 
+```javascript
+// Your JavaScript code here
+const example = "Hello, GitHub!";
+console.log(example);
+
+
