@@ -27,6 +27,6 @@ Details d'un utilisateur
 ![Detail user](./captureeditchahine.PNG)
 Interface de chat :
 Chat instantannée impelementé avec avec les webSocket :
-![Chat instantanné](./Capturechahine3.PNG.PNG)
+![Chat instantanné](./Capturechahine3.PNG)
 
 
