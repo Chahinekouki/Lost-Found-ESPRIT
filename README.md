@@ -1,8 +1,4 @@
-<html>
-<p align="center">
-  <b><font color="#ff5733" size="6">Projet "LOST & FOUND" - Plateforme de Gestion des Objets Trouvés</font></b>
-</p>
-</html>
+#Projet "LOST & FOUND" - Plateforme de Gestion des Objets Trouvés
 Bienvenue dans le README du projet "LOST & FOUND", fruit d'un stage d'immersion captivant de 6 semaines au sein du groupe SSD Team. Ce projet novateur s'adresse spécifiquement aux étudiants de l'établissement ESPRIT,
 offrant une solution dédiée à la recherche et à la récupération d'objets égarés au sein de l'école.
 # Objectif du Projet
