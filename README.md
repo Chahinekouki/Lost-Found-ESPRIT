@@ -1,4 +1,4 @@
-# Projet "LOST & FOUND" - Plateforme de Gestion des Objets Trouvés
+
 <p align="center">
   <b><font color="#ff5733" size="6">Projet "LOST & FOUND" - Plateforme de Gestion des Objets Trouvés</font></b>
 </p>
