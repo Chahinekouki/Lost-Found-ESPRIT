@@ -21,6 +21,9 @@ security: Gère la sécurité de l'application, utilisant Spring Security.
 # 2-Architecture physique 
 ![Aperçu de la Plateforme E-sport](./Architecturephysique.png)
 # Interfaces 
+Liste des utilisateurs 
+![Aperçu de la Plateforme E-sport](./Captureusers.PNG)
+Details d'un utilisateur 
 ![Aperçu de la Plateforme E-sport](./captureeditchahine.PNG)
 
 
