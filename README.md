@@ -29,10 +29,77 @@ Interface de chat :
 Chat instantannée impelementé avec avec les webSocket :
 ![Chat instantanné](./Capturechahine3.PNG)
 
-
+# Implementation d'un chat instantannée en utilisant Socket.io coté front end 
 ```javascript
 // Your JavaScript code here
-const example = "Hello, GitHub!";
-console.log(example);
+connectToChat() {
+    const headers = { 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar' };
+       const id1 = this.userAuthService.getUserId().replace('"','').replace('"','')!;
+    const nick1 = this.userAuthService.getUserName().replace('"','').replace('"','');
+    const id2 = this.otherUser?.id!;
+    const nick2 = this.otherUser?.userFirstName!;
+
+   if (id1.toLowerCase().localeCompare(id2.toLowerCase())==1) {
+    this.channelName = nick1 + '&' + nick2;
+    console.log("id1 "+id1+" superieur à id2 "+id2)
+    console.log("channelname "+this.channelName);
+  }
+  else {
+    this.channelName = nick2 + '&' + nick1;
+    console.log("channelname "+this.channelName);
+    console.log("id2 "+id2+" superieur à id1"+id1)
+  }
+    this.loadChat();
+    this.socket = new SockJS(this.url + '/chat');
+    console.log('connecting to chat...');
+    this.stompClient = Stomp.over(this.socket);
+
+    this.stompClient.connect({ 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar' }, (frame) => {
+      //func = what to do when connection is established
+      console.log('connected to: ' + frame);
+      this.stompClient!.subscribe(
+        '/topic/messages/' + this.channelName,
+        (response) => {
+          this.loadChat();
+        }
+      );
+    });
+  }
+
+  sendMsg() {
+    const headers = { 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar' };
+    if (this.newMessage.value !== '') {
+      this.stompClient!.send(
+        '/app/chat/' + this.channelName,
+        {header : headers},
+        JSON.stringify({
+          sender: this.userAuthService.getUserName(),
+          t_stamp: 'to be defined in server',
+          content: this.newMessage.value,
+        })
+      );
+      this.newMessage.setValue('');
+    }
+  }
+
+  loadChat(){
+
+    this.messages = this.http.post<Array<Messaggio>>(this.url+'/getMessages' ,  this.channelName );
+    this.messages.subscribe(data => {
+      let mgs:Array<Messaggio> = data;
+      mgs.sort((a, b) => (a.ms_id > b.ms_id) ? 1 : -1)
+      this.messages = of(mgs);
+    })
+    console.log(this.messages);
+  }
+
+  whenWasItPublished(myTimeStamp: string) {
+    const endDate = myTimeStamp.indexOf('-');
+    return (
+      myTimeStamp.substring(0, endDate) +
+      ' at ' +
+      myTimeStamp.substring(endDate + 1)
+    );
+  }
 
 
