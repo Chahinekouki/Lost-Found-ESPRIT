@@ -18,5 +18,7 @@ impl: Implémente les services spécifiques.
 repository: Gère l'accès à la base de données.
 model: Définit les entités et les objets métier.
 security: Gère la sécurité de l'application, utilisant Spring Security.
-# 1-Diagramme de classe 
+# 1-Architecture physique 
+![Aperçu de la Plateforme E-sport](./Architecturephysique.png)
+
 
